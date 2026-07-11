@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { GameBoard } from "@/components/GameBoard";
 import { loadCases, isSubscribed, setSubscribed } from "@/lib/game-store";
