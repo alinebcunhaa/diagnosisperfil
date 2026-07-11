@@ -77,14 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Perfil Médico — Diagnostic Guessing Game" },
+      { name: "description", content: "A sophisticated medical diagnosis guessing game with progressive clues across epidemiology, symptoms, labs, and imaging." },
+      { name: "author", content: "Perfil Médico" },
+      { property: "og:title", content: "Perfil Médico — Diagnostic Guessing Game" },
+      { property: "og:description", content: "Diagnose progressively revealed medical cases. Solo or 1v1 local duel." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
