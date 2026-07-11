@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { GameBoard } from "@/components/GameBoard";
 import { loadCases, isSubscribed, setSubscribed } from "@/lib/game-store";
@@ -67,6 +67,12 @@ function Home() {
           </span>
         </button>
         <div className="flex items-center gap-3 text-xs">
+          <Link
+            to="/biblioteca"
+            className="rounded-full border border-border bg-secondary px-3 py-1.5 font-semibold uppercase tracking-widest text-muted-foreground transition hover:border-primary hover:text-primary"
+          >
+            📖 Biblioteca de casos
+          </Link>
           <button
             onClick={toggleSubscription}
             className={`rounded-full border px-3 py-1.5 font-semibold uppercase tracking-widest transition ${
