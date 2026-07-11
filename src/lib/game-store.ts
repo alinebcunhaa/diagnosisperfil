@@ -5,7 +5,7 @@ const SUB_KEY = "perfil-medico:subscribed";
 const ADMIN_KEY = "perfil-medico:admin";
 
 export const ADMIN_EMAIL = "alinebcunhaa@gmail.com";
-export const ADMIN_PASSWORD = "Perfil@Master2026";
+export const ADMIN_PASSWORD = "loladm6719";
 
 export function loadCases(): MedicalCase[] {
   if (typeof window === "undefined") return SEED_CASES;
