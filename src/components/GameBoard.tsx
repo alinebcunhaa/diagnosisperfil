@@ -21,10 +21,10 @@ const STARTING_POINTS = 100;
 export function GameBoard({ cases, mode, onExit }: Props) {
   const [players, setPlayers] = useState<PlayerState[]>(
     mode === "solo"
-      ? [{ name: "Player", score: 0, solved: 0 }]
+      ? [{ name: "Jogador", score: 0, solved: 0 }]
       : [
-          { name: "Player 1", score: 0, solved: 0 },
-          { name: "Player 2", score: 0, solved: 0 },
+          { name: "Jogador 1", score: 0, solved: 0 },
+          { name: "Jogador 2", score: 0, solved: 0 },
         ]
   );
   const [turn, setTurn] = useState(0);
@@ -109,10 +109,10 @@ export function GameBoard({ cases, mode, onExit }: Props) {
             onClick={onExit}
             className="text-xs font-medium uppercase tracking-widest text-muted-foreground hover:text-foreground"
           >
-            ← Exit round
+            ← Sair da rodada
           </button>
           <h1 className="mt-1 truncate font-display text-2xl font-bold sm:text-3xl">
-            {mode === "versus" ? `${active.name}'s turn` : "Diagnostic Round"}
+            {mode === "versus" ? `Vez de ${active.name}` : "Rodada diagnóstica"}
           </h1>
         </div>
         <div className="flex shrink-0 items-center gap-2">
@@ -136,7 +136,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
         <div>
           <div className="flex items-baseline justify-between">
             <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Points available
+              Pontos disponíveis
             </span>
             <span className="font-display text-2xl font-bold text-primary">{remaining}</span>
           </div>
@@ -148,7 +148,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
           </div>
         </div>
         <div className="text-xs text-muted-foreground sm:text-right">
-          Clues revealed <span className="font-semibold text-foreground">{revealedTotal}</span> / {totalClues}
+          Pistas reveladas <span className="font-semibold text-foreground">{revealedTotal}</span> / {totalClues}
         </div>
       </div>
 
@@ -167,7 +167,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
                     <div className="min-w-0">
                       <h3 className="truncate font-display text-base font-semibold">{meta.label}</h3>
                       <p className="text-[11px] uppercase tracking-widest text-muted-foreground">
-                        {shown} / {all.length} revealed
+                        {shown} / {all.length} reveladas
                       </p>
                     </div>
                   </div>
@@ -176,7 +176,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
                     disabled={!canReveal}
                     className="shrink-0 rounded-md border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    Reveal −{meta.cost}
+                    Revelar −{meta.cost}
                   </button>
                 </header>
                 <ul className="divide-y divide-border/60">
@@ -188,7 +188,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
                   ))}
                   {shown === 0 && (
                     <li className="px-4 py-4 text-center text-xs italic text-muted-foreground">
-                      No clues revealed in this category yet
+                      Nenhuma pista revelada nesta categoria ainda
                     </li>
                   )}
                 </ul>
@@ -200,7 +200,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
         <aside className="space-y-4">
           <div className="card-elevated overflow-hidden">
             <div className="border-b border-border/60 bg-secondary/50 px-4 py-3">
-              <h3 className="font-display text-base font-semibold">Visual clue</h3>
+              <h3 className="font-display text-base font-semibold">Pista visual</h3>
               <p className="text-[11px] uppercase tracking-widest text-muted-foreground">
                 {currentCase.visualClue.caption}
               </p>
@@ -225,7 +225,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
                   className="flex h-full w-full flex-col items-center justify-center gap-2 text-primary hover:bg-primary/5 disabled:opacity-40"
                 >
                   <span className="text-4xl">🩻</span>
-                  <span className="text-sm font-semibold">Reveal image −25 pts</span>
+                  <span className="text-sm font-semibold">Revelar imagem −25 pts</span>
                 </button>
               )}
             </div>
@@ -233,7 +233,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
 
           <div className="card-elevated p-4">
             <label className="block text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Your diagnosis
+              Seu diagnóstico
             </label>
             <div className="mt-2 flex gap-2">
               <input
@@ -241,7 +241,7 @@ export function GameBoard({ cases, mode, onExit }: Props) {
                 onChange={(e) => setGuess(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && submitGuess()}
                 disabled={feedback === "correct" || feedback === "giveup"}
-                placeholder="e.g. Acute appendicitis"
+                placeholder="ex. Apendicite aguda"
                 className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm outline-none ring-primary/30 focus:ring-2"
               />
               <button
@@ -249,28 +249,28 @@ export function GameBoard({ cases, mode, onExit }: Props) {
                 disabled={feedback === "correct" || feedback === "giveup"}
                 className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-40"
               >
-                Submit
+                Enviar
               </button>
             </div>
             {feedback === "wrong" && (
               <p className="clue-reveal mt-3 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
-                Not quite — −10 pt penalty. Reveal another clue?
+                Não é isso — penalidade de −10 pts. Revelar outra pista?
               </p>
             )}
             {feedback === "correct" && (
               <div className="clue-reveal mt-3 rounded-md border border-accent/40 bg-accent/15 px-3 py-3 text-sm">
                 <p className="font-semibold text-accent-foreground">
-                  ✓ Correct — {currentCase.diagnosis}
+                  ✓ Correto — {currentCase.diagnosis}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  You earned <b>{remaining}</b> points.
+                  Você ganhou <b>{remaining}</b> pontos.
                 </p>
               </div>
             )}
             {feedback === "giveup" && (
               <div className="clue-reveal mt-3 rounded-md border border-border bg-secondary px-3 py-3 text-sm">
-                <p className="font-semibold">Answer: {currentCase.diagnosis}</p>
-                <p className="mt-1 text-xs text-muted-foreground">No points awarded this round.</p>
+                <p className="font-semibold">Resposta: {currentCase.diagnosis}</p>
+                <p className="mt-1 text-xs text-muted-foreground">Nenhum ponto nesta rodada.</p>
               </div>
             )}
 
@@ -280,14 +280,14 @@ export function GameBoard({ cases, mode, onExit }: Props) {
                 disabled={feedback === "correct" || feedback === "giveup"}
                 className="text-muted-foreground underline hover:text-destructive disabled:opacity-40"
               >
-                Give up
+                Desistir
               </button>
               {(feedback === "correct" || feedback === "giveup") && (
                 <button
                   onClick={nextRound}
                   className="rounded-md bg-cocoa px-3 py-1.5 font-semibold text-background hover:opacity-90"
                 >
-                  Next case →
+                  Próximo caso →
                 </button>
               )}
             </div>

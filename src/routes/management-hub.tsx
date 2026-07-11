@@ -20,7 +20,7 @@ import {
 export const Route = createFileRoute("/management-hub")({
   head: () => ({
     meta: [
-      { title: "Restricted" },
+      { title: "Área restrita" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -44,7 +44,7 @@ function ManagementHub() {
       setAuthed(true);
       setError("");
     } else {
-      setError("Access denied. Credentials do not match an administrator.");
+      setError("Acesso negado. Credenciais não correspondem a um administrador.");
     }
   }
 
@@ -66,15 +66,15 @@ function ManagementHub() {
             <div className="mx-auto grid h-12 w-12 place-items-center rounded-lg bg-cocoa font-display text-2xl font-black text-background">
               ⌘
             </div>
-            <h1 className="mt-3 font-display text-xl font-bold">Restricted area</h1>
+            <h1 className="mt-3 font-display text-xl font-bold">Área restrita</h1>
             <p className="mt-1 text-xs text-muted-foreground">
-              Administrator credentials required.
+              Credenciais de administrador obrigatórias.
             </p>
           </div>
 
           <label className="mb-3 block">
             <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Email
+              E-mail
             </span>
             <input
               type="email"
@@ -87,7 +87,7 @@ function ManagementHub() {
           </label>
           <label className="mb-4 block">
             <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Password
+              Senha
             </span>
             <input
               type="password"
@@ -107,13 +107,13 @@ function ManagementHub() {
             type="submit"
             className="w-full rounded-md bg-primary py-2 font-semibold text-primary-foreground hover:opacity-90"
           >
-            Authenticate
+            Entrar
           </button>
           <Link
             to="/"
             className="mt-4 block text-center text-xs text-muted-foreground hover:text-foreground"
           >
-            ← Back to game
+            ← Voltar ao jogo
           </Link>
         </form>
       </main>
@@ -172,25 +172,25 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
     const id = `case-${Date.now()}`;
     const empty: MedicalCase = {
       id,
-      diagnosis: "New Condition",
+      diagnosis: "Nova condição",
       aliases: [],
       isPremium: false,
       clues: { epidemiology: [""], history: [""], clinical: [""], labs: [""], imaging: [""] },
-      visualClue: { prompt: "", caption: "Visual finding" },
+      visualClue: { prompt: "", caption: "Achado visual" },
     };
     persist([empty, ...cases]);
     setSelectedId(id);
   }
 
   function deleteCase(id: string) {
-    if (!confirm("Delete this case permanently?")) return;
+    if (!confirm("Excluir este caso permanentemente?")) return;
     const next = cases.filter((c) => c.id !== id);
     persist(next);
     if (selectedId === id) setSelectedId(next[0]?.id ?? null);
   }
 
   function restoreSeed() {
-    if (!confirm("Restore built-in case library? Custom edits will be lost.")) return;
+    if (!confirm("Restaurar biblioteca padrão? As edições personalizadas serão perdidas.")) return;
     resetCases();
     setCases(SEED_CASES);
     setSelectedId(SEED_CASES[0]?.id ?? null);
@@ -202,10 +202,10 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4">
           <div className="min-w-0">
             <div className="text-[10px] font-semibold uppercase tracking-widest opacity-70">
-              Management hub
+              Central de gerenciamento
             </div>
             <h1 className="truncate font-display text-lg font-bold sm:text-xl">
-              Case library — {cases.length} record{cases.length !== 1 && "s"}
+              Biblioteca de casos — {cases.length} registro{cases.length !== 1 && "s"}
             </h1>
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -213,13 +213,13 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
               to="/"
               className="rounded-md border border-background/30 px-3 py-1.5 text-xs font-semibold hover:bg-background/10"
             >
-              View site
+              Ver site
             </Link>
             <button
               onClick={onLogout}
               className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90"
             >
-              Sign out
+              Sair
             </button>
           </div>
         </div>
@@ -232,12 +232,12 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
               onClick={addCase}
               className="flex-1 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
             >
-              + New case
+              + Novo caso
             </button>
             <button
               onClick={restoreSeed}
               className="rounded-md border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground hover:border-primary hover:text-primary"
-              title="Restore seed data"
+              title="Restaurar biblioteca padrão"
             >
               ↺
             </button>
@@ -256,7 +256,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                   <div className="min-w-0">
                     <div className="truncate font-semibold">{c.diagnosis}</div>
                     <div className="mt-0.5 text-[10px] uppercase tracking-widest text-muted-foreground">
-                      {c.isPremium ? "Premium" : "Public"} · {countClues(c)} clues
+                      {c.isPremium ? "Premium" : "Público"} · {countClues(c)} pistas
                     </div>
                   </div>
                 </button>
@@ -264,7 +264,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
             ))}
             {cases.length === 0 && (
               <li className="rounded-md border border-dashed border-border p-4 text-center text-xs text-muted-foreground">
-                No cases yet.
+                Nenhum caso ainda.
               </li>
             )}
           </ul>
@@ -276,7 +276,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
                   <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Diagnosis
+                    Diagnóstico
                   </span>
                   <input
                     value={selected.diagnosis}
@@ -286,7 +286,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                 </label>
                 <label className="block">
                   <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Accepted aliases (comma-separated)
+                    Sinônimos aceitos (separados por vírgula)
                   </span>
                   <input
                     value={selected.aliases.join(", ")}
@@ -307,24 +307,24 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                     checked={selected.isPremium}
                     onChange={(e) => updateSelected({ isPremium: e.target.checked })}
                   />
-                  <span>Premium (subscribers only)</span>
+                  <span>Premium (apenas assinantes)</span>
                 </label>
                 <button
                   onClick={() => deleteCase(selected.id)}
                   className="justify-self-start rounded-md border border-destructive/40 px-3 py-2 text-xs font-semibold text-destructive hover:bg-destructive hover:text-destructive-foreground sm:justify-self-end"
                 >
-                  Delete case
+                  Excluir caso
                 </button>
               </div>
             </div>
 
             <div className="card-elevated p-5">
-              <h3 className="font-display text-base font-semibold">Visual clue</h3>
+              <h3 className="font-display text-base font-semibold">Pista visual</h3>
               <div className="mt-3 grid gap-4 sm:grid-cols-[1fr_180px]">
                 <div className="space-y-3">
                   <label className="block">
                     <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                      Caption
+                      Legenda
                     </span>
                     <input
                       value={selected.visualClue.caption}
@@ -338,7 +338,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                   </label>
                   <label className="block">
                     <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                      Description (shown if no image URL)
+                      Descrição (exibida se não houver URL de imagem)
                     </span>
                     <textarea
                       value={selected.visualClue.prompt}
@@ -353,7 +353,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                   </label>
                   <label className="block">
                     <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                      Image URL (optional)
+                      URL da imagem (opcional)
                     </span>
                     <input
                       value={selected.visualClue.imageUrl ?? ""}
@@ -379,7 +379,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                     />
                   ) : (
                     <div className="grid h-full place-items-center p-3 text-center text-xs italic text-muted-foreground">
-                      No image
+                      Sem imagem
                     </div>
                   )}
                 </div>
@@ -399,7 +399,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                       onClick={() => addClue(cat)}
                       className="rounded-md border border-primary/30 px-2.5 py-1 text-xs font-semibold text-primary hover:bg-primary hover:text-primary-foreground"
                     >
-                      + Add clue
+                      + Adicionar pista
                     </button>
                   </div>
                   <ul className="space-y-2">
@@ -417,7 +417,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                         <button
                           onClick={() => removeClue(cat, i)}
                           className="mt-1 rounded-md border border-border px-2 py-1 text-xs text-muted-foreground hover:border-destructive hover:text-destructive"
-                          aria-label="Remove clue"
+                          aria-label="Remover pista"
                         >
                           ×
                         </button>
@@ -425,7 +425,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                     ))}
                     {list.length === 0 && (
                       <li className="rounded-md border border-dashed border-border p-3 text-center text-xs text-muted-foreground">
-                        No clues in this category.
+                        Nenhuma pista nesta categoria.
                       </li>
                     )}
                   </ul>
@@ -435,7 +435,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
           </section>
         ) : (
           <section className="card-elevated grid place-items-center p-10 text-center text-sm text-muted-foreground">
-            Select a case on the left or create a new one.
+            Selecione um caso à esquerda ou crie um novo.
           </section>
         )}
       </div>
