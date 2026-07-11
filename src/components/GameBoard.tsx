@@ -18,6 +18,19 @@ interface PlayerState {
 
 const STARTING_POINTS = 100;
 
+function freeRevealState(c: MedicalCase): Record<ClueCategory, number> {
+  const state = {} as Record<ClueCategory, number>;
+  for (const cat of CATEGORY_ORDER) {
+    // Primeira pista de cada categoria (exceto imagem) vem grátis, como prévia do caso.
+    state[cat] = cat === "imaging" ? 0 : currentCaseHasClue(c, cat) ? 1 : 0;
+  }
+  return state;
+}
+
+function currentCaseHasClue(c: MedicalCase, cat: ClueCategory): boolean {
+  return c.clues[cat] && c.clues[cat].length > 0;
+}
+
 export function GameBoard({ cases, mode, onExit }: Props) {
   const [players, setPlayers] = useState<PlayerState[]>(
     mode === "solo"
@@ -33,13 +46,9 @@ export function GameBoard({ cases, mode, onExit }: Props) {
   const currentCaseId = deck[roundIdx];
   const currentCase = cases.find((c) => c.id === currentCaseId) ?? cases[0];
 
-  const [revealed, setRevealed] = useState<Record<ClueCategory, number>>({
-    epidemiology: 0,
-    history: 0,
-    clinical: 0,
-    labs: 0,
-    imaging: 0,
-  });
+  const [revealed, setRevealed] = useState<Record<ClueCategory, number>>(() =>
+    freeRevealState(currentCase)
+  );
   const [visualRevealed, setVisualRevealed] = useState(false);
   const [pointsSpent, setPointsSpent] = useState(0);
   const [guess, setGuess] = useState("");
@@ -79,13 +88,18 @@ export function GameBoard({ cases, mode, onExit }: Props) {
 
   function nextRound() {
     const nextIdx = roundIdx + 1;
+    let nextDeck = deck;
+    let nextRoundIdx = nextIdx;
     if (nextIdx >= deck.length) {
-      setDeck(shuffle(cases.map((c) => c.id)));
+      nextDeck = shuffle(cases.map((c) => c.id));
+      nextRoundIdx = 0;
+      setDeck(nextDeck);
       setRoundIdx(0);
     } else {
       setRoundIdx(nextIdx);
     }
-    setRevealed({ epidemiology: 0, history: 0, clinical: 0, labs: 0, imaging: 0 });
+    const upcomingCase = cases.find((c) => c.id === nextDeck[nextRoundIdx]) ?? cases[0];
+    setRevealed(freeRevealState(upcomingCase));
     setVisualRevealed(false);
     setPointsSpent(0);
     setGuess("");
