@@ -17,12 +17,13 @@ interface PlayerState {
 }
 
 const STARTING_POINTS = 100;
+const FREE_PREVIEW_CATEGORY: ClueCategory = "clinical";
 
 function freeRevealState(c: MedicalCase): Record<ClueCategory, number> {
   const state = {} as Record<ClueCategory, number>;
   for (const cat of CATEGORY_ORDER) {
-    // Primeira pista de cada categoria (exceto imagem) vem grátis, como prévia do caso.
-    state[cat] = cat === "imaging" ? 0 : currentCaseHasClue(c, cat) ? 1 : 0;
+    // Só o Quadro Clínico começa liberado, como prévia do caso; o resto custa pontos.
+    state[cat] = cat === FREE_PREVIEW_CATEGORY && currentCaseHasClue(c, cat) ? 1 : 0;
   }
   return state;
 }
@@ -166,6 +167,18 @@ export function GameBoard({ cases, mode, onExit }: Props) {
         </div>
       </div>
 
+      {currentCase.clues[FREE_PREVIEW_CATEGORY]?.[0] && (
+        <div className="clue-reveal mt-5 overflow-hidden rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 via-sand to-transparent p-5 shadow-sm">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary">
+            <span className="text-lg">{CATEGORY_META.clinical.icon}</span>
+            Quadro clínico inicial · grátis
+          </div>
+          <p className="mt-2 font-display text-lg leading-snug text-foreground">
+            {currentCase.clues[FREE_PREVIEW_CATEGORY][0]}
+          </p>
+        </div>
+      )}
+
       <div className="mt-6 grid gap-5 lg:grid-cols-[1.6fr_1fr]">
         <section className="space-y-3">
           {CATEGORY_ORDER.map((cat) => {
@@ -194,15 +207,23 @@ export function GameBoard({ cases, mode, onExit }: Props) {
                   </button>
                 </header>
                 <ul className="divide-y divide-border/60">
-                  {all.slice(0, shown).map((clue, i) => (
-                    <li key={i} className="clue-reveal px-4 py-3 text-sm leading-relaxed">
-                      <span className="mr-2 font-mono text-xs text-muted-foreground">#{i + 1}</span>
-                      {clue}
-                    </li>
-                  ))}
+                  {(cat === FREE_PREVIEW_CATEGORY ? all.slice(1, shown) : all.slice(0, shown)).map((clue, i) => {
+                    const num = cat === FREE_PREVIEW_CATEGORY ? i + 2 : i + 1;
+                    return (
+                      <li key={i} className="clue-reveal px-4 py-3 text-sm leading-relaxed">
+                        <span className="mr-2 font-mono text-xs text-muted-foreground">#{num}</span>
+                        {clue}
+                      </li>
+                    );
+                  })}
                   {shown === 0 && (
                     <li className="px-4 py-4 text-center text-xs italic text-muted-foreground">
                       Nenhuma pista revelada nesta categoria ainda
+                    </li>
+                  )}
+                  {cat === FREE_PREVIEW_CATEGORY && shown === 1 && (
+                    <li className="px-4 py-4 text-center text-xs italic text-muted-foreground">
+                      A primeira pista está no card de destaque acima ↑
                     </li>
                   )}
                 </ul>
